@@ -19,12 +19,16 @@ public class PostEntity {
     private String title;
     private String createrId;
     private String locationDesc;
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
     private String summary;
     private Date createDate;
 
-    public PostEntity(String title, String createrId, String locationDesc, String latitude, String longitude, String summary, Date createDate) {
+    public PostEntity() {
+    }
+
+    public PostEntity(String title, String createrId, String locationDesc, double latitude, double longitude, String summary, Date createDate) {
+
         this.title = title;
         this.createrId = createrId;
         this.locationDesc = locationDesc;
@@ -32,9 +36,6 @@ public class PostEntity {
         this.longitude = longitude;
         this.summary = summary;
         this.createDate = createDate;
-    }
-
-    public PostEntity() {
     }
 
     public String getId() {
@@ -77,21 +78,21 @@ public class PostEntity {
 
     @Basic
     @Column(name = "latitude")
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
     @Basic
     @Column(name = "longitude")
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -122,12 +123,12 @@ public class PostEntity {
 
         PostEntity that = (PostEntity) o;
 
+        if (Double.compare(that.latitude, latitude) != 0) return false;
+        if (Double.compare(that.longitude, longitude) != 0) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (createrId != null ? !createrId.equals(that.createrId) : that.createrId != null) return false;
         if (locationDesc != null ? !locationDesc.equals(that.locationDesc) : that.locationDesc != null) return false;
-        if (latitude != null ? !latitude.equals(that.latitude) : that.latitude != null) return false;
-        if (longitude != null ? !longitude.equals(that.longitude) : that.longitude != null) return false;
         if (summary != null ? !summary.equals(that.summary) : that.summary != null) return false;
         if (createDate != null ? !createDate.equals(that.createDate) : that.createDate != null) return false;
 
@@ -136,12 +137,16 @@ public class PostEntity {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result;
+        long temp;
+        result = id != null ? id.hashCode() : 0;
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (createrId != null ? createrId.hashCode() : 0);
         result = 31 * result + (locationDesc != null ? locationDesc.hashCode() : 0);
-        result = 31 * result + (latitude != null ? latitude.hashCode() : 0);
-        result = 31 * result + (longitude != null ? longitude.hashCode() : 0);
+        temp = Double.doubleToLongBits(latitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(longitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (createDate != null ? createDate.hashCode() : 0);
         return result;
