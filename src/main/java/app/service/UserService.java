@@ -44,7 +44,7 @@ public class UserService {
 
     public  boolean checkUserByNameAndPassword(String name,String password){
         UserEntity ue = userDAO.findByName(name);
-        return ue != null&&ue.getPassword()==password;
+        return ue != null&&ue.getPassword().equals(password);
     }
 
     public standardRes login(String name,String password){
