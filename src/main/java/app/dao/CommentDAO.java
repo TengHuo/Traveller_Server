@@ -9,4 +9,5 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface CommentDAO extends CrudRepository<CommentEntity,String> {
+
 }
