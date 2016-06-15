@@ -5,6 +5,8 @@ import app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+
 /**
  * Created by zhujay on 16/6/15.
  */
@@ -27,5 +29,19 @@ public class UserController {
             return new standardRes(999,e.toString());
         }
 
+    }
+
+    @RequestMapping(value = "/user/login/{name}",method = RequestMethod.POST)
+    public standardRes login(@PathVariable("name")String name,
+                             @PathParam(value = "password",defaultValue="")String password){
+        if (password.equals("")) return new standardRes(202,"密码不能为空");
+
+        try{
+            return userService.login(name,password);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new standardRes(999,e.toString());
+        }
     }
 }

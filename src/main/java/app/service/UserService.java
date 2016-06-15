@@ -41,4 +41,18 @@ public class UserService {
             return new standardRes(999,e.toString());
         }
     }
+
+    public  boolean checkUserByNameAndPassword(String name,String password){
+        UserEntity ue = userDAO.findByName(name);
+        return ue != null&&ue.getPassword()==password;
+    }
+
+    public standardRes login(String name,String password){
+        if (checkUserByNameAndPassword(name,password)) {
+            return new standardRes(0,"成功登陆");
+        }else{
+            return new standardRes(201,"登陆失败");
+        }
+
+    }
 }
