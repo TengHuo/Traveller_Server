@@ -16,3 +16,6 @@ hs_err_pid*
 
 # 。gradle folder
 .gradle/
+
+# build folder
+build/
