@@ -11,4 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserDAO extends CrudRepository<UserEntity,String> {
     public UserEntity findByEmail(String email);
     public UserEntity findByName(String name);
+    public UserEntity findById(String id);
 }
