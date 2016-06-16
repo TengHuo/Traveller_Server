@@ -45,11 +45,11 @@ public class FollowService {
 
     //取消follow
     public standardRes cancelFollow(String follower_id,String followee_id){
-        RelationEntity re = relationDAO.findByFollower_idAndFollowee_id(follower_id,followee_id);
-        if (re!=null) return new standardRes(304,"follow关系不存在");
+        RelationEntity re = relationDAO.findByFollowerIdAndFolloweeId(follower_id,followee_id);
+        if (re==null) return new standardRes(304,"follow关系不存在");
         try{
             relationDAO.delete(re);
-            return new standardRes(0,"follow成功");
+            return new standardRes(0,"取消follow成功");
         }catch (Exception e){
             e.printStackTrace();
             return new standardRes(999,e.toString());
