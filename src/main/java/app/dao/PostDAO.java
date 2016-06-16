@@ -9,5 +9,4 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface PostDAO extends CrudRepository<PostEntity,String> {
-    public PostEntity findById(String id);
 }
