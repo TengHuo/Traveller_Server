@@ -1,10 +1,7 @@
 package app.dao;
 
 import app.entity.CommentEntity;
-import app.entity.UserEntity;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,5 +11,6 @@ import java.util.List;
  */
 @Transactional
 public interface CommentDAO extends CrudRepository<CommentEntity,String> {
-    public List<CommentEntity> findByCommentId(String id);
+    public List<CommentEntity> findByCreaterId(String id);
+    public List<CommentEntity> findByPostId(String id);
 }

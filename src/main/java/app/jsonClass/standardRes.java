@@ -1,5 +1,9 @@
 package app.jsonClass;
 
+import app.entity.CommentEntity;
+
+import java.util.List;
+
 /**
  * Created by zhujay on 16/6/15.
  */
@@ -17,6 +21,7 @@ public class standardRes {
         this.errCode = errCode;
         this.errMessage = errMessage;
     }
+
 
     public int getErrCode() {
         return errCode;
