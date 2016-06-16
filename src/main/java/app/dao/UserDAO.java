@@ -1,9 +1,7 @@
 package app.dao;
 
 import app.entity.UserEntity;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -13,4 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserDAO extends CrudRepository<UserEntity,String> {
     public UserEntity findByEmail(String email);
     public UserEntity findByName(String name);
+    public UserEntity findById(String id);
 }

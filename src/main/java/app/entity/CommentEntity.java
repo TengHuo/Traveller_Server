@@ -10,7 +10,7 @@ import java.sql.Date;
  */
 @Entity
 @Table(name = "comment", schema = "traveller", catalog = "")
-@IdClass(CommentEntityPK.class)
+//@IdClass(CommentEntityPK.class)
 public class CommentEntity {
     @Id
     @GeneratedValue(generator = "commentIdGenerator")
@@ -40,7 +40,7 @@ public class CommentEntity {
         this.commentId = commentId;
     }
 
-    @Id
+//    @Id
     @Column(name = "post_id")
     public String getPostId() {
         return postId;
@@ -50,7 +50,7 @@ public class CommentEntity {
         this.postId = postId;
     }
 
-    @Id
+//    @Id
     @Column(name = "creater_id")
     public String getCreaterId() {
         return createrId;

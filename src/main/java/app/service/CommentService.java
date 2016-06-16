@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Created by jixiang on 16/6/15.
@@ -17,16 +18,20 @@ import java.sql.Date;
 public class CommentService {
     @Autowired
     CommentDAO commentDAO;
+
+    @Autowired
     PostDAO postDAO;
+
+    @Autowired
     UserDAO userDAO;
 
 
-    public standardRes saveComment(String creater_id, String post_id,String content) {
+    public standardRes saveComment(String post_id, String creater_id, String content) {
         java.util.Date create_date = new java.util.Date();
         CommentEntity ce = new CommentEntity(post_id, creater_id, new Date(create_date.getTime()), content);
 //        ce.setCommentId("jixiang1");
-        if (!commentDAO.ifIdExistsInUser(creater_id)) return new standardRes(305, "评论者不存在");
-        if (!commentDAO.ifIdExistsInPost(post_id)) return new standardRes(306, "post不存在");
+//        if (userDAO.findById(creater_id) == null) return new standardRes(305, "评论者不存在");
+//        if (postDAO.findById(post_id) == null) return new standardRes(306, "post不存在");
 
         try {
             commentDAO.save(ce);
@@ -37,13 +42,22 @@ public class CommentService {
         }
     }
 
-    public standardRes getCommentList(String id) {
+//    public standardRes getCommentList(String id) {
+//        try {
+//            commentDAO.findByCommentId(id);
+//            return  new standardRes(308, "获取成功");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return new standardRes(309, "获取失败\n" + e.toString());
+//        }
+//    }
+
+    public List<CommentEntity> getCommentList(String id) {
         try {
-            commentDAO.findByCommentId(id);
-            return new standardRes(308, commentDAO.findByCommentId(id).toString());
+            return commentDAO.findByCommentId(id);
         } catch (Exception e) {
             e.printStackTrace();
-            return new standardRes(309, "获取失败\n" + e.toString());
+            return null;
         }
     }
 }
