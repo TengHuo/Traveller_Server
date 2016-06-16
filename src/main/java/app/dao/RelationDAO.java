@@ -9,4 +9,5 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface RelationDAO extends CrudRepository<RelationEntity,String> {
+    public RelationEntity findByFollower_idAndFollowee_id(String follower_id,String followee_id);
 }
