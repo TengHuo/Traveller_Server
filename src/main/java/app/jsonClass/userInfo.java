@@ -4,6 +4,8 @@ package app.jsonClass;
  * Created by zhujay on 16/6/17.
  */
 public class userInfo {
+    private String follower_id;
+    private String followee_id;
     private String name;
     private String avatar;
     private String email;
@@ -18,7 +20,9 @@ public class userInfo {
     public userInfo() {
     }
 
-    public userInfo(String name, String avatar, String email, String location, int gender, String summary, String homepage, String register_date, int following_num, int follower_num) {
+    public userInfo(String follower_id,String followee_id,String name, String avatar, String email, String location, int gender, String summary, String homepage, String register_date, int following_num, int follower_num) {
+        this.followee_id = followee_id;
+        this.follower_id = follower_id;
         this.name = name;
         this.avatar = avatar;
         this.email = email;
@@ -29,6 +33,22 @@ public class userInfo {
         this.register_date = register_date;
         this.following_num = following_num;
         this.follower_num = follower_num;
+    }
+
+    public String getFollower_id() {
+        return follower_id;
+    }
+
+    public void setFollower_id(String follower_id) {
+        this.follower_id = follower_id;
+    }
+
+    public String getFollowee_id() {
+        return followee_id;
+    }
+
+    public void setFollowee_id(String followee_id) {
+        this.followee_id = followee_id;
     }
 
     public String getName() {

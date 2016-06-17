@@ -75,7 +75,7 @@ public class UserService {
         UserEntity ue = userDAO.findById(userid);
         if(ue == null) return new userInfoRes(106,"获取用户信息失败",null);
 
-        userInfo ui = new userInfo(ue.getName(),ue.getAvatar(),ue.getEmail(),ue.getLocation(),ue.getGender(),ue.getSummary(),ue.getHomepage(),ue.getRegisterDate().toString(),ue.getFollowingNum(),ue.getFollowerNum());
+        userInfo ui = new userInfo(null,null,ue.getName(),ue.getAvatar(),ue.getEmail(),ue.getLocation(),ue.getGender(),ue.getSummary(),ue.getHomepage(),ue.getRegisterDate().toString(),ue.getFollowingNum(),ue.getFollowerNum());
         return new userInfoRes(0,null,ui);
     }
 }

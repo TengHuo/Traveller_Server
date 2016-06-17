@@ -44,7 +44,7 @@ public class TokenService {
 
     //生成新的过期时间
     private long getExpTime(){
-        return new java.util.Date().getTime() / 1000 + 3600 * 2;
+        return new java.util.Date().getTime() / 1000 + 3600 * 24;
     }
 
 //    public boolean checkExistBtToken(String token){
