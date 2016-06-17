@@ -2,6 +2,7 @@ package app.controller;
 
 import app.jsonClass.PostRes;
 import app.service.PostService;
+import app.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +15,16 @@ public class PostController {
     @Autowired
     PostService postService;
 
+    @Autowired
+    TokenService tokenService;
+
     @RequestMapping(value = "/post/detail", method = RequestMethod.GET)
 
     public PostRes submitComment(@RequestParam String token,
                                  @RequestParam String id) {
+
+        String _id = tokenService.token2id(token);
+        if(_id == null) return new PostRes(105);
         if (token.equals("")) return new PostRes(401);
         if (id.equals("")) return new PostRes(402);
 

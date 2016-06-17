@@ -3,6 +3,7 @@ package app.controller;
 import app.jsonClass.CommentRes;
 import app.jsonClass.standardRes;
 import app.service.CommentService;
+import app.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,17 +17,24 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
+    @Autowired
+    TokenService tokenService;
+
     @RequestMapping(value = "/comment/submit", method = RequestMethod.POST)
 
-    public standardRes submitComment(@RequestParam String post_id,
-                                     @RequestParam String creater_id,
+    public standardRes submitComment(@RequestParam String token,
+                                     @RequestParam String post_id,
+                                     @RequestParam String creator_id,
                                      @RequestParam String content) {
+        String _id = tokenService.token2id(token);
+        if(_id == null || !_id.equals(creator_id)) return new standardRes(105,"token异常");
+
         if (post_id.equals("")) return new standardRes(301, "post id不能为空");
-        if (creater_id.equals("")) return new standardRes(302, "creator id不能为空");
+        if (creator_id.equals("")) return new standardRes(302, "creator id不能为空");
         if (content.equals("")) return new standardRes(303, "评论内容不能为空");
 
         try {
-            return commentService.saveComment(post_id, creater_id, content);
+            return commentService.saveComment(post_id, creator_id, content);
         } catch (Exception e) {
             e.printStackTrace();
             return new standardRes(999, e.toString());
@@ -35,9 +43,11 @@ public class CommentController {
 
     @RequestMapping(value = "/comment/list", method = RequestMethod.GET)
 
-    public CommentRes getCommentList(@RequestParam(value = "token", defaultValue = "") String token,
-                                     @RequestParam(value = "creator_id", defaultValue = "") String creator_id) {
-        if (token.equals("")) return new CommentRes(310);
+    public CommentRes getCommentList(@RequestParam(value = "token") String token,
+                                     @RequestParam(value = "creator_id") String creator_id) {
+
+        String _id = tokenService.token2id(token);
+        if(_id == null || !_id.equals(creator_id)) return new CommentRes(105);
         if (creator_id.equals("")) return new CommentRes(307);
 
         try {
@@ -50,8 +60,12 @@ public class CommentController {
 
     @RequestMapping(value = "/comment/plist", method = RequestMethod.GET)
 
-    public CommentRes getCommentPList(@RequestParam(value = "token", defaultValue = "") String token,
-                                      @RequestParam(value = "post_id", defaultValue = "") String post_id) {
+    public CommentRes getCommentPList(@RequestParam(value = "token") String token,
+                                      @RequestParam(value = "post_id") String post_id) {
+
+        String _id = tokenService.token2id(token);
+        if(_id == null) return new CommentRes(105);
+
         if (token.equals("")) return new CommentRes(310);
         if (post_id.equals("")) return new CommentRes(307);
         System.out.println("post_id: " + post_id);
