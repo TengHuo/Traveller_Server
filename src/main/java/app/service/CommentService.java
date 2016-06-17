@@ -4,12 +4,15 @@ import app.dao.PostDAO;
 import app.dao.CommentDAO;
 import app.dao.UserDAO;
 import app.entity.CommentEntity;
-import app.jsonClass.EntitiesRes;
+import app.jsonClass.Comment;
+import app.jsonClass.CommentRes;
 import app.jsonClass.standardRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jixiang on 16/6/15.
@@ -43,24 +46,49 @@ public class CommentService {
         }
     }
 
-    public EntitiesRes getCommentList(String id) {
-        if (commentDAO.findByCreaterId(id).equals(("[]"))) return new EntitiesRes(305, "评论者不存在");
+    public CommentRes getCommentList(String id) {
+        if (commentDAO.findByCreaterId(id).equals(("[]"))) return new CommentRes(305);
         try {
-            return new EntitiesRes(308, commentDAO.findByCreaterId(id));
+            List<CommentEntity> commentEntityList = commentDAO.findByCreaterId(id);
+            List<Comment> commentList = new ArrayList<>();
+            int length = commentEntityList.size();
+            for (int i = 0; i< length; i++) {
+                Comment comment = new Comment();
+                comment.setId(commentEntityList.get(i).getCommentId());
+                comment.setCreatorId(commentEntityList.get(i).getCreaterId());
+                comment.setCreatorAvatar(userDAO.findById(id).getAvatar());
+                comment.setPostId(commentEntityList.get(i).getPostId());
+                comment.setContent(commentEntityList.get(i).getContent());
+                comment.setCreateDate(commentEntityList.get(i).getCreateDate());
+                commentList.add(comment);
+            }
+            return new CommentRes(308, commentList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new EntitiesRes(309, "获取失败");
+            return new CommentRes(309);
         }
     }
 
-    public EntitiesRes getCommentPList(String id) {
-        System.out.println("post____id: " + id);
-        if (commentDAO.findByPostId(id).equals(("[]"))) return new EntitiesRes(306, "post不存在");
+    public CommentRes getCommentPList(String id) {
+        if (commentDAO.findByPostId(id).equals(("[]"))) return new CommentRes(306);
         try {
-            return new EntitiesRes(308, commentDAO.findByPostId(id));
+            List<CommentEntity> commentEntityList = commentDAO.findByPostId(id);
+            List commentList = new ArrayList<>();
+            int length = commentEntityList.size();
+            for (int i = 0; i< length; i++) {
+                Comment comment = new Comment();
+                comment.setId(commentEntityList.get(i).getCommentId());
+                comment.setCreatorId(commentEntityList.get(i).getCreaterId());
+                comment.setCreatorAvatar(userDAO.findById(commentEntityList.get(i).getCreaterId()).getAvatar());
+                comment.setPostId(commentEntityList.get(i).getPostId());
+                comment.setContent(commentEntityList.get(i).getContent());
+                comment.setCreateDate(commentEntityList.get(i).getCreateDate());
+                commentList.add(comment);
+            }
+            return new CommentRes(308, commentList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new EntitiesRes(309, "获取失败");
+            return new CommentRes(309);
         }
     }
 }
