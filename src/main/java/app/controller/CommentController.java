@@ -47,14 +47,14 @@ public class CommentController {
                                      @RequestParam(value = "creator_id") String creator_id) {
 
         String _id = tokenService.token2id(token);
-        if(_id == null || !_id.equals(creator_id)) return new CommentRes(105);
-        if (creator_id.equals("")) return new CommentRes(307);
+        if(_id == null || !_id.equals(creator_id)) return new CommentRes(105, tokenService.id2token(_id));
+        if (creator_id.equals("")) return new CommentRes(307, tokenService.id2token(_id));
 
         try {
-            return commentService.getCommentList(creator_id);
+            return commentService.getCommentList(creator_id, _id);
         } catch (Exception e) {
             e.printStackTrace();
-            return new CommentRes(999);
+            return new CommentRes(999, tokenService.id2token(_id));
         }
     }
 
@@ -64,16 +64,16 @@ public class CommentController {
                                       @RequestParam(value = "post_id") String post_id) {
 
         String _id = tokenService.token2id(token);
-        if(_id == null) return new CommentRes(105);
+        if(_id == null) return new CommentRes(105, tokenService.id2token(_id));
 
-        if (token.equals("")) return new CommentRes(310);
-        if (post_id.equals("")) return new CommentRes(307);
+        if (token.equals("")) return new CommentRes(310, tokenService.id2token(_id));
+        if (post_id.equals("")) return new CommentRes(307, tokenService.id2token(_id));
         System.out.println("post_id: " + post_id);
         try {
-            return commentService.getCommentPList(post_id);
+            return commentService.getCommentPList(post_id, _id);
         } catch (Exception e) {
             e.printStackTrace();
-            return new CommentRes(999);
+            return new CommentRes(999, tokenService.id2token(_id));
         }
     }
 }
