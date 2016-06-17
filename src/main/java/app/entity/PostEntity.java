@@ -13,7 +13,7 @@ import java.sql.Date;
 public class PostEntity {
     @Id
     @GeneratedValue(generator = "postIdGenerator")
-    @GenericGenerator(name = "postIdGenerator",strategy = "uuid")
+    @GenericGenerator(name = "postIdGenerator",strategy = "uuid2")
     @Column(name = "id")
     private String id;
     private String title;

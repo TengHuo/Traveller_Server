@@ -14,7 +14,7 @@ import java.sql.Date;
 public class CommentEntity {
     @Id
     @GeneratedValue(generator = "commentIdGenerator")
-    @GenericGenerator(name = "commentIdGenerator",strategy = "uuid")
+    @GenericGenerator(name = "commentIdGenerator",strategy = "uuid2")
     @Column(name = "comment_id")
     private String commentId;
     private String postId;

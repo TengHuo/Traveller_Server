@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class ImageEntity {
     @Id
     @GeneratedValue(generator = "imageIdGenerator")
-    @GenericGenerator(name = "imageIdGenerator",strategy = "uuid")
+    @GenericGenerator(name = "imageIdGenerator",strategy = "uuid2")
     @Column(name = "id")
     private String id;
     private String postId;
