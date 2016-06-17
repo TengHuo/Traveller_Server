@@ -23,7 +23,7 @@ public class UptokenController {
     @RequestMapping(value = "/{token}/uptoken",method = RequestMethod.GET)
     public uptokenRes getUptoken(@PathVariable("token") String token){
         return (tokenService.token2id(token) != null)
-                ? (new uptokenRes(0,"",qiniuService.getUpToken()))
-                : (new uptokenRes(105,"token异常",""));
+                ? (new uptokenRes(0,null,qiniuService.getUpToken()))
+                : (new uptokenRes(105,"token异常",null));
     }
 }

@@ -4,6 +4,8 @@ import app.dao.UserDAO;
 import app.entity.UserEntity;
 import app.jsonClass.standardRes;
 import app.jsonClass.tokenRes;
+import app.jsonClass.userInfo;
+import app.jsonClass.userInfoRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,15 +60,22 @@ public class UserService {
 
     public tokenRes login(String name,String password){
         UserEntity ue = userDAO.findByName(name);
-        if (ue == null) return new tokenRes(201,"登录失败");
+        if (ue == null) return new tokenRes(201,null,"登录失败");
         if (ue.getPassword().equals(password)){
             if(tokenService.id2token(ue.getId()) != null)
-                return (tokenService.updateToken(ue.getId())) ? new tokenRes(0,tokenService.id2token(ue.getId())) : new tokenRes(999,"更新token失败,登录失败");
+                return (tokenService.updateToken(ue.getId())) ? new tokenRes(0,ue.getId(),tokenService.id2token(ue.getId())) : new tokenRes(999,null,"更新token失败,登录失败");
             else
-                return (tokenService.createToken(ue.getId())) ? new tokenRes(0,tokenService.id2token(ue.getId())) : new tokenRes(999,"创建token失败,登录失败");
+                return (tokenService.createToken(ue.getId())) ? new tokenRes(0,ue.getId(),tokenService.id2token(ue.getId())) : new tokenRes(999,null,"创建token失败,登录失败");
         }else{
-            return new tokenRes(201,"登陆失败");
+            return new tokenRes(201,null,"登陆失败");
         }
+    }
 
+    public userInfoRes getUserInfo(String userid){
+        UserEntity ue = userDAO.findById(userid);
+        if(ue == null) return new userInfoRes(106,"获取用户信息失败",null);
+
+        userInfo ui = new userInfo(ue.getName(),ue.getAvatar(),ue.getEmail(),ue.getLocation(),ue.getGender(),ue.getSummary(),ue.getHomepage(),ue.getRegisterDate().toString(),ue.getFollowingNum(),ue.getFollowerNum());
+        return new userInfoRes(0,null,ui);
     }
 }

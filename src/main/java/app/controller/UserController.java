@@ -2,6 +2,8 @@ package app.controller;
 
 import app.jsonClass.standardRes;
 import app.jsonClass.tokenRes;
+import app.jsonClass.userInfoRes;
+import app.service.TokenService;
 import app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     UserService userService;
+
+    @Autowired
+    TokenService tokenService;
 
     @RequestMapping(value = "/user/register/{name}",method = RequestMethod.POST)
     public standardRes register(@PathVariable("name")String name,
@@ -34,14 +39,23 @@ public class UserController {
     @RequestMapping(value = "/user/login/{name}",method = RequestMethod.POST)
     public tokenRes login(@PathVariable("name")String name,
                           @RequestParam(value = "password",defaultValue="")String password){
-        if (password.equals("")) return new tokenRes(202,"密码不能为空");
+        if (password.equals("")) return new tokenRes(202,"","密码不能为空");
 
         try{
             return userService.login(name,password);
 
         }catch (Exception e){
             e.printStackTrace();
-            return new tokenRes(999,e.toString());
+            return new tokenRes(999,null,e.toString());
         }
+    }
+
+    @RequestMapping(value = "/user/{userid}/info",method = RequestMethod.GET)
+    public userInfoRes getUserInfo(@PathVariable("userid") String userid,
+                                   @RequestParam(value = "token",defaultValue = "")String token){
+        if(tokenService.token2id(token) == null ||!tokenService.token2id(token).equals(userid)) return new userInfoRes(105,"token异常",null);
+
+        return userService.getUserInfo(userid);
+
     }
 }

@@ -5,14 +5,25 @@ package app.jsonClass;
  */
 public class tokenRes {
     private int errCode;
+    private String userId;
     private String token;
 
-    public tokenRes(int errCode, String token) {
+
+    public tokenRes(int errCode, String userId, String token) {
         this.errCode = errCode;
+        this.userId = userId;
         this.token = token;
     }
 
     public tokenRes() {
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public int getErrCode() {
