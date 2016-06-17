@@ -35,7 +35,7 @@ public class ImageEntity {
         this.id = id;
     }
 
-    @Id
+//    @Id
     @Column(name = "post_id")
     public String getPostId() {
         return postId;

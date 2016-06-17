@@ -85,7 +85,7 @@ public class CommentService {
                 comment.setCreateDate(commentEntityList.get(i).getCreateDate());
                 commentList.add(comment);
             }
-            return new CommentRes(308, commentList);
+            return new CommentRes(308);
         } catch (Exception e) {
             e.printStackTrace();
             return new CommentRes(309);

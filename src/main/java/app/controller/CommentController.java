@@ -18,7 +18,9 @@ public class CommentController {
 
     @RequestMapping(value = "/comment/submit", method = RequestMethod.POST)
 
-    public standardRes submitComment(@RequestParam String post_id, @RequestParam String creater_id, @RequestParam String content) {
+    public standardRes submitComment(@RequestParam String post_id,
+                                     @RequestParam String creater_id,
+                                     @RequestParam String content) {
         if (post_id.equals("")) return new standardRes(301, "post id不能为空");
         if (creater_id.equals("")) return new standardRes(302, "creator id不能为空");
         if (content.equals("")) return new standardRes(303, "评论内容不能为空");
