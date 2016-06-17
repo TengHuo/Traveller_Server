@@ -3,6 +3,7 @@ package app.service;
 import app.dao.UserDAO;
 import app.entity.UserEntity;
 import app.jsonClass.standardRes;
+import app.jsonClass.tokenRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,16 +56,16 @@ public class UserService {
         }
     }
 
-    public standardRes login(String name,String password){
+    public tokenRes login(String name,String password){
         UserEntity ue = userDAO.findByName(name);
-        if (ue == null) return new standardRes(201,"登录失败");
+        if (ue == null) return new tokenRes(201,"登录失败");
         if (ue.getPassword().equals(password)){
             if(tokenService.id2token(ue.getId()) != null)
-                return (tokenService.updateToken(ue.getId())) ? new standardRes(0,"登录成功") : new standardRes(999,"更新token失败,登录失败");
+                return (tokenService.updateToken(ue.getId())) ? new tokenRes(0,tokenService.id2token(ue.getId())) : new tokenRes(999,"更新token失败,登录失败");
             else
-                return (tokenService.createToken(ue.getId())) ? new standardRes(0,"登录成功") : new standardRes(999,"创建token失败,登录失败");
+                return (tokenService.createToken(ue.getId())) ? new tokenRes(0,tokenService.id2token(ue.getId())) : new tokenRes(999,"创建token失败,登录失败");
         }else{
-            return new standardRes(201,"登陆失败");
+            return new tokenRes(201,"登陆失败");
         }
 
     }

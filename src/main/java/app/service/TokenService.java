@@ -20,7 +20,7 @@ public class TokenService {
     public String token2id(String token){
         try {
             TokenEntity te = tokenDAO.findByToken(token);
-            return (te == null) ? null : te.getUserId();
+            return (te == null || te.getExp() < new java.util.Date().getTime() / 1000) ? null : ( (tokenDAO.updateToken(token,getExpTime()) != 0) ? te.getUserId() : null  );
         }catch (Exception e){
             e.printStackTrace();
             return null;

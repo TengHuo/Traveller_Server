@@ -22,7 +22,7 @@ public interface TokenDAO extends CrudRepository<TokenEntity,String> {
 
     @Transactional
     @Modifying
-    @Query("update TokenEntity as te set te.exp = :_exp where te.userId in(select ue.id from UserEntity ue where ue.name = :username)")
-    public int updateToken(@Param("username") String username,@Param("_exp") long _exp);
+    @Query("update TokenEntity te set te.exp = :_exp where te.token = :token")
+    public int updateToken(@Param("token") String token,@Param("_exp") long _exp);
 
 }
