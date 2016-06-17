@@ -14,6 +14,11 @@ public class userInfoRes<T> {
         this.data = data;
     }
 
+    public userInfoRes(int errCode, String errMessage) {
+        this.errCode = errCode;
+        this.errMessage = errMessage;
+    }
+
     public int getErrCode() {
         return errCode;
     }

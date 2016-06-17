@@ -28,6 +28,9 @@ public class CommentService {
     @Autowired
     UserDAO userDAO;
 
+    @Autowired
+    TokenService tokenService;
+
 
     public standardRes saveComment(String post_id, String creater_id, String content) {
         java.util.Date create_date = new java.util.Date();
@@ -46,8 +49,8 @@ public class CommentService {
         }
     }
 
-    public CommentRes getCommentList(String id) {
-        if (commentDAO.findByCreaterId(id).equals(("[]"))) return new CommentRes(305);
+    public CommentRes getCommentList(String id, String _id) {
+        if (commentDAO.findByCreaterId(id).equals(("[]"))) return new CommentRes(305, tokenService.id2token(_id));
         try {
             List<CommentEntity> commentEntityList = commentDAO.findByCreaterId(id);
             List<Comment> commentList = new ArrayList<>();
@@ -62,15 +65,15 @@ public class CommentService {
                 comment.setCreateDate(commentEntityList.get(i).getCreateDate());
                 commentList.add(comment);
             }
-            return new CommentRes(308, commentList);
+            return new CommentRes(308, commentList, tokenService.id2token(_id));
         } catch (Exception e) {
             e.printStackTrace();
-            return new CommentRes(309);
+            return new CommentRes(309, tokenService.id2token(_id));
         }
     }
 
-    public CommentRes getCommentPList(String id) {
-        if (commentDAO.findByPostId(id).equals(("[]"))) return new CommentRes(306);
+    public CommentRes getCommentPList(String id, String _id) {
+        if (commentDAO.findByPostId(id).equals(("[]"))) return new CommentRes(306, tokenService.id2token(_id));
         try {
             List<CommentEntity> commentEntityList = commentDAO.findByPostId(id);
             List commentList = new ArrayList<>();
@@ -85,10 +88,10 @@ public class CommentService {
                 comment.setCreateDate(commentEntityList.get(i).getCreateDate());
                 commentList.add(comment);
             }
-            return new CommentRes(308);
+            return new CommentRes(308, tokenService.id2token(_id));
         } catch (Exception e) {
             e.printStackTrace();
-            return new CommentRes(309);
+            return new CommentRes(309, tokenService.id2token(_id));
         }
     }
 }

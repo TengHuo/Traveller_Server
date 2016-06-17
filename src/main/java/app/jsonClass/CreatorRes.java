@@ -1,27 +1,23 @@
 package app.jsonClass;
 
-import java.util.List;
-
 /**
- * Created by jixiang on 2016/6/17.
+ * Created by LENOVO on 2016/6/17.
  */
-public class PostRes<T> {
+public class CreatorRes {
     private int errCode;
-    private T post;
+    private Creator creator;
     private String token;
 
-    public PostRes(int errCode, T post, String token) {
+    public CreatorRes(int errCode, Creator creator, String token) {
         this.errCode = errCode;
-        this.post = post;
+        this.creator = creator;
         this.token = token;
     }
 
-    public PostRes(int errCode, String token) {
+    public CreatorRes(int errCode, String token) {
         this.errCode = errCode;
-        this.post = null;
         this.token = token;
     }
-
     public int getErrCode() {
         return errCode;
     }
@@ -30,12 +26,12 @@ public class PostRes<T> {
         this.errCode = errCode;
     }
 
-    public T getPost() {
-        return post;
+    public Creator getCreator() {
+        return creator;
     }
 
-    public void setPost(T post) {
-        this.post = post;
+    public void setCreator(Creator creator) {
+        this.creator = creator;
     }
 
     public String getToken() {

@@ -10,20 +10,18 @@ import java.util.List;
 public class CommentRes {
     private int errCode;
     private List<Comment> comments;
+    private String token;
 
-    public CommentRes() {
-        this.errCode = 0;
-        this.comments = null;
-    }
-
-    public CommentRes(int errCode) {
+    public CommentRes(int errCode, String token) {
         this.errCode = errCode;
         this.comments = null;
+        this.token = token;
     }
 
-    public CommentRes(int errCode, List<Comment> comments) {
+    public CommentRes(int errCode, List<Comment> comments, String token) {
         this.errCode = errCode;
         this.comments = comments;
+        this.token = token;
     }
 
     public int getErrCode() {
@@ -40,5 +38,13 @@ public class CommentRes {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
