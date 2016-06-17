@@ -16,6 +16,9 @@ public class UserService {
     @Autowired
     UserDAO userDAO;
 
+    @Autowired
+    TokenService tokenService;
+
     public boolean checkUserByEmail(String email){
         UserEntity ue = userDAO.findByEmail(email);
         return ue != null;
@@ -23,6 +26,16 @@ public class UserService {
 
     public boolean checkUserByName(String name){
         UserEntity ue = userDAO.findByName(name);
+        return ue != null;
+    }
+
+//    private  boolean checkUserByNameAndPassword(String name,String password){
+//        UserEntity ue = userDAO.findByName(name);
+//        return ue != null&&ue.getPassword().equals(password);
+//    }
+
+    public boolean checkUserById(String id){
+        UserEntity ue = userDAO.findById(id);
         return ue != null;
     }
 
@@ -42,14 +55,14 @@ public class UserService {
         }
     }
 
-    public  boolean checkUserByNameAndPassword(String name,String password){
-        UserEntity ue = userDAO.findByName(name);
-        return ue != null&&ue.getPassword().equals(password);
-    }
-
     public standardRes login(String name,String password){
-        if (checkUserByNameAndPassword(name,password)) {
-            return new standardRes(0,"成功登陆");
+        UserEntity ue = userDAO.findByName(name);
+        if (ue == null) return new standardRes(201,"登录失败");
+        if (ue.getPassword().equals(password)){
+            if(tokenService.id2token(ue.getId()) != null)
+                return (tokenService.updateToken(ue.getId())) ? new standardRes(0,"登录成功") : new standardRes(999,"更新token失败,登录失败");
+            else
+                return (tokenService.createToken(ue.getId())) ? new standardRes(0,"登录成功") : new standardRes(999,"创建token失败,登录失败");
         }else{
             return new standardRes(201,"登陆失败");
         }
