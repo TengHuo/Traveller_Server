@@ -119,4 +119,21 @@ public class PostService {
         }
     }
 
+    public standardRes savePost(Post post, List<String> imageURLs) {
+        if (userDAO.findById(post.getCreatorId()) == null) return new standardRes(407, "用户id不存在");
+        try {
+            PostEntity pe = new PostEntity(post.getTitle(), post.getCreatorId(), post.getLocationDesc(),
+                    post.getLatitude(), post.getLongitude(), post.getSummary(), post.getCreateDate());
+            postDAO.save(pe);
+            imageURLs.forEach(url -> {
+                ImageEntity image = new ImageEntity(pe.getId(), url);
+                imageDAO.save(image);
+            });
+            return new standardRes(0, "post发布成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new standardRes(304, "post发布失败\n" + e.toString());
+        }
+    }
+
 }

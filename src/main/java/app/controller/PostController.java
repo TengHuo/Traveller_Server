@@ -1,11 +1,15 @@
 package app.controller;
 
 import app.jsonClass.CreatorRes;
+import app.jsonClass.Post;
 import app.jsonClass.PostRes;
+import app.jsonClass.standardRes;
 import app.service.PostService;
 import app.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by jixiang on 2016/6/17.
@@ -66,6 +70,29 @@ public class PostController {
         } catch (Exception e) {
             e.printStackTrace();
             return new PostRes(999, tokenService.id2token(_id));
+        }
+    }
+
+    @RequestMapping(value = "/post/new", method = RequestMethod.POST)
+
+    public standardRes createPost(@RequestParam String token,
+                                  @RequestParam Post post,
+                                  @RequestParam List<String> imageURLs) {
+        String _id = tokenService.token2id(token);
+        if (post.getCreatorId() == null) return new standardRes(406, "用户id不能为空");
+        if(_id == null || !_id.equals(post.getCreatorId())) return new standardRes(105, "Token异常");
+        if (post.getTitle() == null
+                || post.getLocationDesc() == null
+                || post.getSummary() == null
+                || post.getCreateDate() == null
+                || imageURLs.size() < 1) {
+            return new standardRes(105, "参数不能有空值");
+        }
+        try {
+            return postService.savePost(post, imageURLs);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new standardRes(999, tokenService.id2token(_id));
         }
     }
 }
