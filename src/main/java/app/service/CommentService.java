@@ -88,7 +88,7 @@ public class CommentService {
                 comment.setCreateDate(commentEntityList.get(i).getCreateDate());
                 commentList.add(comment);
             }
-            return new CommentRes(0, tokenService.id2token(_id));
+            return new CommentRes(0, commentList, tokenService.id2token(_id));
         } catch (Exception e) {
             e.printStackTrace();
             return new CommentRes(309, tokenService.id2token(_id));

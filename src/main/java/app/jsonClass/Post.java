@@ -37,7 +37,7 @@ public class Post {
         return creatorId;
     }
 
-    public void setCreatorId(String createrId) {
+    public void setCreatorId(String creatorId) {
         this.creatorId = creatorId;
     }
 
