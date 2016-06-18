@@ -57,7 +57,7 @@ public class PostService {
             post.setImageURLs(imageList);
             post.setCreateDate(postEntity.getCreateDate());
 
-            return new PostRes(404, post, tokenService.id2token(_id));
+            return new PostRes(0, post, tokenService.id2token(_id));
         } catch (Exception e) {
             e.printStackTrace();
             return new PostRes(405, tokenService.id2token(_id));
@@ -80,7 +80,7 @@ public class PostService {
             creator.setRegister_date(userEntity.getRegisterDate());
             creator.setFollowing_num(userEntity.getFollowingNum());
             creator.setFollower_num(userEntity.getFollowerNum());
-            return new CreatorRes(404, creator, tokenService.id2token(_id));
+            return new CreatorRes(0, creator, tokenService.id2token(_id));
         } catch (Exception e) {
             e.printStackTrace();
             return new CreatorRes(405, tokenService.id2token(_id));
@@ -112,7 +112,7 @@ public class PostService {
             });
 
 
-            return new PostRes(404, postsList, tokenService.id2token(_id));
+            return new PostRes(0, postsList, tokenService.id2token(_id));
         } catch (Exception e) {
             e.printStackTrace();
             return new PostRes(405, tokenService.id2token(_id));
