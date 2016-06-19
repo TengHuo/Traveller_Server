@@ -29,5 +29,18 @@ public class ScheduleService {
         }
     }
 
+    public standardRes deleteSchedule(String scheduleId){
+        ScheduleEntity se = scheduleDAO.findById(scheduleId);
+        if(se == null) return new standardRes(503,"schedule不存在");
+
+        try {
+            scheduleDAO.delete(se);
+            return new standardRes();
+        }catch (Exception e){
+            e.printStackTrace();
+            return new standardRes(999,e.toString());
+        }
+    }
+
 
 }

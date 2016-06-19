@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class PlanController {
-    @Autowired
-    PlanService planService;
-    @Autowired
-    TokenService tokenService;
+//    @Autowired
+//    PlanService planService;
+//    @Autowired
+//    TokenService tokenService;
 
 }
