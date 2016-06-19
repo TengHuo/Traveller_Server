@@ -2,11 +2,13 @@ package app.service;
 
 import app.dao.ScheduleDAO;
 import app.entity.ScheduleEntity;
+import app.jsonClass.scheduleListRes;
 import app.jsonClass.standardRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Created by zhujay on 16/6/19.
@@ -40,6 +42,17 @@ public class ScheduleService {
             e.printStackTrace();
             return new standardRes(999,e.toString());
         }
+    }
+
+    public scheduleListRes getScheduleList(String userid){
+        try{
+            List<ScheduleEntity> lse = scheduleDAO.findByCreatorId(userid);
+            return new scheduleListRes(0,"",lse);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new scheduleListRes(999,e.toString());
+        }
+
     }
 
 

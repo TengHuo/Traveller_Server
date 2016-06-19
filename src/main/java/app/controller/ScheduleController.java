@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.jsonClass.scheduleListRes;
 import app.jsonClass.standardRes;
 import app.service.ScheduleService;
 import app.service.TokenService;
@@ -47,6 +48,19 @@ public class ScheduleController {
         }catch (Exception e){
             e.printStackTrace();
             return new standardRes(999,e.toString());
+        }
+    }
+
+    @RequestMapping(value = "/schedule/{token}/{userid}/list",method = RequestMethod.GET)
+    public scheduleListRes getScheduleList(@PathVariable("token")String token,
+                                           @PathVariable("userid")String userid){
+        String _id = tokenService.token2id(token);
+        if(_id == null || !_id.equals(userid)) return new scheduleListRes(105,"token异常");
+        try{
+            return scheduleService.getScheduleList(userid);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new scheduleListRes(999,e.toString());
         }
     }
 }
