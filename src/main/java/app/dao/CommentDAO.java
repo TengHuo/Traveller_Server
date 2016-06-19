@@ -15,4 +15,5 @@ import java.util.List;
 public interface CommentDAO extends CrudRepository<CommentEntity,String> {
     public List<CommentEntity> findByCreaterId(String id);
     public List<CommentEntity> findByPostId(String id);
+    public CommentEntity findByCommentId(String id);
 }

@@ -47,14 +47,14 @@ public class CommentController {
                                      @RequestParam(value = "creator_id") String creator_id) {
 
         String _id = tokenService.token2id(token);
-        if(_id == null || !_id.equals(creator_id)) return new CommentRes(105, tokenService.id2token(_id));
-        if (creator_id.equals("")) return new CommentRes(307, tokenService.id2token(_id));
+        if(_id == null || !_id.equals(creator_id)) return new CommentRes(105, "token异常");
+        if (creator_id.equals("")) return new CommentRes(307, "id不能为空");
 
         try {
-            return commentService.getCommentList(creator_id, _id);
+            return commentService.getCommentList(creator_id);
         } catch (Exception e) {
             e.printStackTrace();
-            return new CommentRes(999, tokenService.id2token(_id));
+            return new CommentRes(999, e.toString());
         }
     }
 
@@ -64,16 +64,16 @@ public class CommentController {
                                       @RequestParam(value = "post_id") String post_id) {
 
         String _id = tokenService.token2id(token);
-        if(_id == null) return new CommentRes(105, tokenService.id2token(_id));
+        if(_id == null) return new CommentRes(105, "token异常");
 
-        if (token.equals("")) return new CommentRes(310, tokenService.id2token(_id));
-        if (post_id.equals("")) return new CommentRes(307, tokenService.id2token(_id));
+        if (token.equals("")) return new CommentRes(310, "请求失败");
+        if (post_id.equals("")) return new CommentRes(307, "id不能为空");
         System.out.println("post_id: " + post_id);
         try {
-            return commentService.getCommentPList(post_id, _id);
+            return commentService.getCommentPList(post_id);
         } catch (Exception e) {
             e.printStackTrace();
-            return new CommentRes(999, tokenService.id2token(_id));
+            return new CommentRes(999, e.toString());
         }
     }
 }

@@ -50,8 +50,8 @@ public class CommentService {
         }
     }
 
-    public CommentRes getCommentList(String id, String _id) {
-        if (commentDAO.findByCreaterId(id).equals(("[]"))) return new CommentRes(305, tokenService.id2token(_id));
+    public CommentRes getCommentList(String id) {
+        if (commentDAO.findByCreaterId(id).equals(("[]"))) return new CommentRes(305, "评论者不存在");
         try {
             List<CommentEntity> commentEntityList = commentDAO.findByCreaterId(id);
             List<Comment> commentList = new ArrayList<>();
@@ -66,15 +66,15 @@ public class CommentService {
                 comment.setCreateDate(commentEntityList.get(i).getCreateDate());
                 commentList.add(comment);
             }
-            return new CommentRes(0, commentList, tokenService.id2token(_id));
+            return new CommentRes(0, commentList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new CommentRes(309, tokenService.id2token(_id));
+            return new CommentRes(309, "获取失败");
         }
     }
 
-    public CommentRes getCommentPList(String id, String _id) {
-        if (commentDAO.findByPostId(id).equals(("[]"))) return new CommentRes(306, tokenService.id2token(_id));
+    public CommentRes getCommentPList(String id) {
+        if (commentDAO.findByPostId(id).equals(("[]"))) return new CommentRes(306, "post不存在");
         try {
             List<CommentEntity> commentEntityList = commentDAO.findByPostId(id);
             List commentList = new ArrayList<>();
@@ -89,10 +89,10 @@ public class CommentService {
                 comment.setCreateDate(commentEntityList.get(i).getCreateDate());
                 commentList.add(comment);
             }
-            return new CommentRes(0, commentList, tokenService.id2token(_id));
+            return new CommentRes(0, commentList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new CommentRes(309, tokenService.id2token(_id));
+            return new CommentRes(309, "获取失败");
         }
     }
 }

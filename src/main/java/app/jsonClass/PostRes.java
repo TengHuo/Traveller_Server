@@ -8,18 +8,15 @@ import java.util.List;
 public class PostRes<T> {
     private int errCode;
     private T post;
-    private String token;
 
-    public PostRes(int errCode, T post, String token) {
+    public PostRes(int errCode, T post) {
         this.errCode = errCode;
         this.post = post;
-        this.token = token;
     }
 
-    public PostRes(int errCode, String token) {
+    public PostRes(int errCode) {
         this.errCode = errCode;
         this.post = null;
-        this.token = token;
     }
 
     public int getErrCode() {
@@ -38,11 +35,4 @@ public class PostRes<T> {
         this.post = post;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

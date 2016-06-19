@@ -1,13 +1,7 @@
 package app.service;
 
-import app.dao.ImageDAO;
-import app.dao.PostDAO;
-import app.dao.RelationDAO;
-import app.dao.UserDAO;
-import app.entity.ImageEntity;
-import app.entity.PostEntity;
-import app.entity.RelationEntity;
-import app.entity.UserEntity;
+import app.dao.*;
+import app.entity.*;
 import app.jsonClass.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,8 +33,11 @@ public class PostService {
     @Autowired
     RelationDAO relationDAO;
 
-    public PostRes getPostById(String id, String _id) {
-        if (postDAO.findById(id) == null) return new PostRes(403, tokenService.id2token(_id));
+    @Autowired
+    CommentDAO commentDAO;
+
+    public PostRes getPostById(String id) {
+        if (postDAO.findById(id) == null) return new PostRes(403, "post id不存在");
         try {
             List<Image> imageList = new ArrayList<>();
             List<ImageEntity> imageEntityList = imageDAO.findByPostId(id);
@@ -64,15 +61,15 @@ public class PostService {
             post.setImageURLs(imageList);
             post.setCreateDate(postEntity.getCreateDate());
 
-            return new PostRes(0, post, tokenService.id2token(_id));
+            return new PostRes(0, post);
         } catch (Exception e) {
             e.printStackTrace();
-            return new PostRes(405, tokenService.id2token(_id));
+            return new PostRes(405, "获取失败");
         }
     }
 
-    public CreatorRes getPostCreator(String post_id, String _id) {
-        if (postDAO.findById(post_id) == null) return new CreatorRes(403, tokenService.id2token(_id));
+    public PostRes getPostCreator(String post_id) {
+        if (postDAO.findById(post_id) == null) return new PostRes(403, "post id不存在");
         try {
             Creator creator = new Creator();
             UserEntity userEntity = userDAO.findById(postDAO.findById(post_id).getCreaterId());
@@ -87,15 +84,15 @@ public class PostService {
             creator.setRegister_date(userEntity.getRegisterDate());
             creator.setFollowing_num(userEntity.getFollowingNum());
             creator.setFollower_num(userEntity.getFollowerNum());
-            return new CreatorRes(0, creator, tokenService.id2token(_id));
+            return new PostRes(0, creator);
         } catch (Exception e) {
             e.printStackTrace();
-            return new CreatorRes(405, tokenService.id2token(_id));
+            return new PostRes(405, "获取失败");
         }
     }
 
-    public PostRes getPosts(String id, String _id) {
-        if (userDAO.findById(id) == null) return new PostRes(407, tokenService.id2token(_id));
+    public PostRes getPosts(String id) {
+        if (userDAO.findById(id) == null) return new PostRes(407, "用户id不存在");
         try {
             List<Posts> postsList = new ArrayList<>();
             List<PostEntity> postEntityList = postDAO.findAllById(id);
@@ -117,10 +114,10 @@ public class PostService {
                 }
                 postsList.add(post);
             });
-            return new PostRes(0, postsList, tokenService.id2token(_id));
+            return new PostRes(0, postsList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new PostRes(405, tokenService.id2token(_id));
+            return new PostRes(405, "获取失败");
         }
     }
 
@@ -141,8 +138,8 @@ public class PostService {
         }
     }
 
-    public PostRes getWatchingPosts(String user_id, String _id) {
-        if (userDAO.findById(user_id) == null) return new PostRes(407, tokenService.id2token(_id));
+    public PostRes getWatchingPosts(String user_id) {
+        if (userDAO.findById(user_id) == null) return new PostRes(407, "用户id不存在");
         try {
             List<Posts> postsList = new ArrayList<>();
             List<RelationEntity> re = relationDAO.findByFollowerId(user_id);
@@ -172,11 +169,46 @@ public class PostService {
                     postsList.add(post);
                 });
             });
-            return new PostRes(0, postsList, tokenService.id2token(_id));
+            return new PostRes(0, postsList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new PostRes(405, tokenService.id2token(_id));
+            return new PostRes(405, "获取失败");
         }
     }
+
+    public PostRes getPostByCommentId(String comment_id) {
+        if (commentDAO.findByCommentId(comment_id) == null) return new PostRes(409, "comment id不存在");
+        try {
+            CommentEntity commentEntity = commentDAO.findByCommentId(comment_id);
+            if (postDAO.findById(commentEntity.getPostId()) == null) return new PostRes(403, "post id不存在");
+            PostEntity postEntity = postDAO.findById(commentEntity.getPostId());
+
+            List<Image> imageList = new ArrayList<>();
+            List<ImageEntity> imageEntityList = imageDAO.findByPostId(commentEntity.getPostId());
+
+            imageEntityList.forEach(imageEntity -> {
+                Image image = new Image();
+                image.setId(imageEntity.getId());
+                image.setImageUrl(imageEntity.getImageUrl());
+                imageList.add(image);
+            });
+
+            Post post = new Post();
+            post.setId(postEntity.getId());
+            post.setTitle(postEntity.getTitle());
+            post.setCreatorId(postEntity.getCreaterId());
+            post.setLocationDesc(postEntity.getLocationDesc());
+            post.setLatitude(postEntity.getLatitude());
+            post.setLongitude(postEntity.getLongitude());
+            post.setSummary(postEntity.getSummary());
+            post.setImageURLs(imageList);
+            post.setCreateDate(postEntity.getCreateDate());
+
+            return new PostRes(0, post);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new PostRes(405, "获取失败");
+        }
+     }
 
 }

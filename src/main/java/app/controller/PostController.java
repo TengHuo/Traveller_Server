@@ -1,6 +1,5 @@
 package app.controller;
 
-import app.jsonClass.CreatorRes;
 import app.jsonClass.Post;
 import app.jsonClass.PostRes;
 import app.jsonClass.standardRes;
@@ -30,30 +29,30 @@ public class PostController {
                                  @RequestParam String id) {
 
         String _id = tokenService.token2id(token);
-        if(_id == null) return new PostRes(105, tokenService.id2token(_id));
-        if (id.equals("")) return new PostRes(402, tokenService.id2token(_id));
+        if(_id == null) return new PostRes(105, "token异常");
+        if (id.equals("")) return new PostRes(402, "post id不能为空");
 
         try {
-            return postService.getPostById(id, _id);
+            return postService.getPostById(id);
         } catch (Exception e) {
             e.printStackTrace();
-            return new PostRes(999, tokenService.id2token(_id));
+            return new PostRes(999, e.toString());
         }
     }
 
     @RequestMapping(value = "/post/creator", method = RequestMethod.GET)
 
-    public CreatorRes getPostCreator(@RequestParam String token,
+    public PostRes getPostCreator(@RequestParam String token,
                                      @RequestParam String id) {
         String _id = tokenService.token2id(token);
-        if(_id == null) return new CreatorRes(105, tokenService.id2token(_id));
-        if (id == null) return new CreatorRes(402, tokenService.id2token(_id));
+        if(_id == null) return new PostRes(105, "token异常");
+        if (id == null) return new PostRes(402, "post id不能为空");
 
         try {
-            return postService.getPostCreator(id, _id);
+            return postService.getPostCreator(id);
         } catch (Exception e) {
             e.printStackTrace();
-            return new CreatorRes(999, tokenService.id2token(_id));
+            return new PostRes(999, e.toString());
         }
     }
 
@@ -62,14 +61,14 @@ public class PostController {
     public PostRes getPosts(@RequestParam String token,
                             @RequestParam String id) {
         String _id = tokenService.token2id(token);
-        if(_id == null || !_id.equals(id)) return new PostRes(105, tokenService.id2token(_id));
-        if (id == null) return new PostRes(406, tokenService.id2token(_id));
+        if(_id == null || !_id.equals(id)) return new PostRes(105, "token异常");
+        if (id == null) return new PostRes(406, "用户id不能为空");
 
         try {
-            return postService.getPosts(id, _id);
+            return postService.getPosts(id);
         } catch (Exception e) {
             e.printStackTrace();
-            return new PostRes(999, tokenService.id2token(_id));
+            return new PostRes(999, e.toString());
         }
     }
 
@@ -101,13 +100,30 @@ public class PostController {
     public PostRes getWatchingPosts(@RequestParam String token,
                                     @RequestParam String user_id) {
         String _id = tokenService.token2id(token);
-        if(_id == null || !_id.equals(user_id)) return new PostRes(105, tokenService.id2token(_id));
-        if (user_id == null) return new PostRes(406, tokenService.id2token(_id));
+        if(_id == null || !_id.equals(user_id)) return new PostRes(105, "token异常");
+        if (user_id == null) return new PostRes(406, "用户id不能为空");
         try {
-            return postService.getWatchingPosts(user_id, _id);
+            return postService.getWatchingPosts(user_id);
         } catch (Exception e) {
             e.printStackTrace();
-            return new PostRes(999, tokenService.id2token(_id));
+            return new PostRes(999, e.toString());
+        }
+    }
+
+
+    // 根据评论id获取post
+    @RequestMapping(value = "/post/comment/{comment_id}", method = RequestMethod.GET)
+    public PostRes getPostByCommentId(@PathVariable String comment_id,
+                                      @RequestParam String token) {
+        String _id = tokenService.token2id(token);
+        if(_id == null) return new PostRes(105, "token异常");
+        if (comment_id == null) return new PostRes(402, "post id不能为空");
+
+        try{
+            return postService.getPostByCommentId(comment_id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new PostRes(999, e.toString());
         }
     }
 }
