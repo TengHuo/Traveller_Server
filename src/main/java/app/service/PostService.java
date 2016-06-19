@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 /**
  * Created by jixiang on 2016/6/17.
