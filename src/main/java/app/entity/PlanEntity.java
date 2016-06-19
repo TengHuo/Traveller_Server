@@ -17,13 +17,17 @@ public class PlanEntity {
     @Column(name = "plan_id")
     private String planId;
     private String scheduleId;
-    private Date travelDate;
+    private String travelDate;
     private String plan;
 
-    public PlanEntity(String scheduleId,String plan){
-        this.scheduleId=scheduleId;
-//        this.travelDate=travelDate;
-        this.plan=plan;
+    public PlanEntity() {
+    }
+
+    public PlanEntity(String scheduleId, String travelDate, String plan) {
+
+        this.scheduleId = scheduleId;
+        this.travelDate = travelDate;
+        this.plan = plan;
     }
 
     public String getPlanId() {
@@ -46,11 +50,11 @@ public class PlanEntity {
 
     @Basic
     @Column(name = "travel_date")
-    public Date getTravelDate() {
+    public String getTravelDate() {
         return travelDate;
     }
 
-    public void setTravelDate(Date travelDate) {
+    public void setTravelDate(String travelDate) {
         this.travelDate = travelDate;
     }
 
