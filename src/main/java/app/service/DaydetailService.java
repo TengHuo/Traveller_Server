@@ -25,7 +25,7 @@ public class DaydetailService {
     PlanDAO planDAO;
 
     public DayDetailRes getDetails(String plan_id) {
-        if (dayDetailDAO.findByPlanId(plan_id) == null) return new DayDetailRes(702, "plan id不存在");
+        if (dayDetailDAO.findByPlanId(plan_id).equals("[]")) return new DayDetailRes(702, "plan id不存在");
 
         try {
             List<DayDetailEntity> dayDetailEntities = dayDetailDAO.findAllByPlanId(plan_id);
@@ -46,6 +46,7 @@ public class DaydetailService {
 
                 dayDetails.add(dayDetail);
             });
+            System.out.println(dayDetails);
             return new DayDetailRes(0, dayDetails);
         } catch (Exception e) {
             e.printStackTrace();

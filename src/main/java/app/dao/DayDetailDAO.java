@@ -16,7 +16,7 @@ import java.util.List;
 @Transactional
 @Component
 public interface DaydetailDAO extends CrudRepository<DayDetailEntity,String> {
-    public DayDetailEntity findByPlanId(String id);
+    public List<DayDetailEntity> findByPlanId(String id);
 
     @Query("SELECT de FROM DayDetailEntity de WHERE de.planId = :id")
     public List<DayDetailEntity> findAllByPlanId(@Param("id") String id);

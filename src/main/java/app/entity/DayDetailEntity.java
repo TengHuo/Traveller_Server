@@ -35,6 +35,9 @@ public class DayDetailEntity {
         this.type = type;
     }
 
+    public DayDetailEntity() {
+    }
+
     public String getId() {
         return id;
     }
