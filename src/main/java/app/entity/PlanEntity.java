@@ -20,6 +20,11 @@ public class PlanEntity {
     private Date travelDate;
     private String plan;
 
+    public PlanEntity(String scheduleId,String plan){
+        this.scheduleId=scheduleId;
+//        this.travelDate=travelDate;
+        this.plan=plan;
+    }
 
     public String getPlanId() {
         return planId;
