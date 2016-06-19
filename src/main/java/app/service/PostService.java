@@ -2,9 +2,11 @@ package app.service;
 
 import app.dao.ImageDAO;
 import app.dao.PostDAO;
+import app.dao.RelationDAO;
 import app.dao.UserDAO;
 import app.entity.ImageEntity;
 import app.entity.PostEntity;
+import app.entity.RelationEntity;
 import app.entity.UserEntity;
 import app.jsonClass.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 /**
  * Created by jixiang on 2016/6/17.
@@ -31,6 +35,9 @@ public class PostService {
 
     @Autowired
     TokenService tokenService;
+
+    @Autowired
+    RelationDAO relationDAO;
 
     public PostRes getPostById(String id, String _id) {
         if (postDAO.findById(id) == null) return new PostRes(403, tokenService.id2token(_id));
@@ -110,8 +117,6 @@ public class PostService {
                 }
                 postsList.add(post);
             });
-
-
             return new PostRes(0, postsList, tokenService.id2token(_id));
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,6 +138,44 @@ public class PostService {
         } catch (Exception e) {
             e.printStackTrace();
             return new standardRes(304, "post发布失败\n" + e.toString());
+        }
+    }
+
+    public PostRes getWatchingPosts(String user_id, String _id) {
+        if (userDAO.findById(user_id) == null) return new PostRes(407, tokenService.id2token(_id));
+        try {
+            List<Posts> postsList = new ArrayList<>();
+            List<RelationEntity> re = relationDAO.findByFollowerId(user_id);
+
+            re.forEach(following -> {
+                // 查找用户关注的人的post列表
+                List<PostEntity> followingPostList = postDAO.findAllById(following.getFolloweeId());
+
+                // 取出用户关注的人的post列表
+                followingPostList.forEach(postEntity -> {
+
+                    // 组装每个post
+                    Posts post = new Posts();
+                    post.setId(postEntity.getId());
+                    post.setTitle(postEntity.getTitle());
+                    post.setLocation(postEntity.getLocationDesc());
+
+                    // 随机选一张缩略图
+                    List<ImageEntity> imageEntityList = imageDAO.findByPostId(postEntity.getId());
+                    if (imageEntityList.size() > 1) {
+                        Random random = new Random();
+                        int max = imageEntityList.size(), min = 1;
+                        post.setImageURL(imageEntityList.get(random.nextInt(max)%(max-min+1) + min).getImageUrl());
+                    } else {
+                        post.setImageURL(imageEntityList.get(0).getImageUrl());
+                    }
+                    postsList.add(post);
+                });
+            });
+            return new PostRes(0, postsList, tokenService.id2token(_id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new PostRes(405, tokenService.id2token(_id));
         }
     }
 

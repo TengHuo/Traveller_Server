@@ -95,4 +95,19 @@ public class PostController {
             return new standardRes(999, tokenService.id2token(_id));
         }
     }
+
+    @RequestMapping(value = "/post/watching", method = RequestMethod.GET)
+
+    public PostRes getWatchingPosts(@RequestParam String token,
+                                    @RequestParam String user_id) {
+        String _id = tokenService.token2id(token);
+        if(_id == null || !_id.equals(user_id)) return new PostRes(105, tokenService.id2token(_id));
+        if (user_id == null) return new PostRes(406, tokenService.id2token(_id));
+        try {
+            return postService.getWatchingPosts(user_id, _id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new PostRes(999, tokenService.id2token(_id));
+        }
+    }
 }
