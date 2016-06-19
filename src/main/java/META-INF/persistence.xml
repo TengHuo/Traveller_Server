@@ -9,6 +9,9 @@
         <class>app.entity.RelationEntity</class>
         <class>app.entity.UserEntity</class>
         <class>app.entity.TokenEntity</class>
+        <class>app.entity.DayDetailEntity</class>
+        <class>app.entity.PlanEntity</class>
+        <class>app.entity.ScheduleEntity</class>
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://121.42.57.59:3306/traveller"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
