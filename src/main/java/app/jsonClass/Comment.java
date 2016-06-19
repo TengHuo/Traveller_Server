@@ -3,6 +3,7 @@ package app.jsonClass;
 import app.entity.CommentEntity;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by jixiang on 2016/6/17.
@@ -13,7 +14,7 @@ public class Comment {
     private String creatorAvatar;
     private String postId;
     private String content;
-    private Date createDate;
+    private Timestamp createDate;
 
     public String getId() {
         return id;
@@ -55,11 +56,11 @@ public class Comment {
         this.content = content;
     }
 
-    public Date getCreateDate() {
+    public Timestamp getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 }

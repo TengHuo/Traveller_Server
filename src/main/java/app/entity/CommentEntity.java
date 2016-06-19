@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by zhujay on 16/6/15.
@@ -19,10 +20,10 @@ public class CommentEntity {
     private String commentId;
     private String postId;
     private String createrId;
-    private Date createDate;
+    private Timestamp createDate;
     private String content;
 
-    public CommentEntity(String postId, String createrId, Date createDate, String content) {
+    public CommentEntity(String postId, String createrId, Timestamp createDate, String content) {
         this.postId = postId;
         this.createrId = createrId;
         this.createDate = createDate;
@@ -62,11 +63,11 @@ public class CommentEntity {
 
     @Basic
     @Column(name = "create_date")
-    public Date getCreateDate() {
+    public Timestamp getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 

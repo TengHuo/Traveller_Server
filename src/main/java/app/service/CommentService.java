@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class CommentService {
 
     public standardRes saveComment(String post_id, String creater_id, String content) {
         java.util.Date create_date = new java.util.Date();
-        CommentEntity ce = new CommentEntity(post_id, creater_id, new Date(create_date.getTime()), content);
+        CommentEntity ce = new CommentEntity(post_id, creater_id, new Timestamp(create_date.getTime()), content);
 
         if (userDAO.findById(creater_id).equals("[]")) return new standardRes(305, "评论者不存在");
 
