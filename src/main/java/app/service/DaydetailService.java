@@ -1,6 +1,6 @@
 package app.service;
 
-import app.dao.DaydetailDAO;
+import app.dao.DayDetailDAO;
 import app.dao.PlanDAO;
 import app.entity.DayDetailEntity;
 import app.jsonClass.DayDetail;
@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class DaydetailService {
     @Autowired
-    DaydetailDAO dayDetailDAO;
+    DayDetailDAO dayDetailDAO;
 
     @Autowired
     PlanDAO planDAO;
