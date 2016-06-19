@@ -46,7 +46,6 @@ public class DaydetailService {
 
                 dayDetails.add(dayDetail);
             });
-            System.out.println(dayDetails);
             return new DayDetailRes(0, dayDetails);
         } catch (Exception e) {
             e.printStackTrace();

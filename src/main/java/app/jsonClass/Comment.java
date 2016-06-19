@@ -14,7 +14,7 @@ public class Comment {
     private String creatorAvatar;
     private String postId;
     private String content;
-    private Timestamp createDate;
+    private String createDate;
 
     public String getId() {
         return id;
@@ -56,11 +56,11 @@ public class Comment {
         this.content = content;
     }
 
-    public Timestamp getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Timestamp createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 }

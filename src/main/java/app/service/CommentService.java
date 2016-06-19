@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +55,9 @@ public class CommentService {
         try {
             List<CommentEntity> commentEntityList = commentDAO.findByCreaterId(id);
             List<Comment> commentList = new ArrayList<>();
+
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
             int length = commentEntityList.size();
             for (int i = 0; i< length; i++) {
                 Comment comment = new Comment();
@@ -62,7 +66,7 @@ public class CommentService {
                 comment.setCreatorAvatar(userDAO.findById(id).getAvatar());
                 comment.setPostId(commentEntityList.get(i).getPostId());
                 comment.setContent(commentEntityList.get(i).getContent());
-                comment.setCreateDate(commentEntityList.get(i).getCreateDate());
+                comment.setCreateDate(df.format(commentEntityList.get(i).getCreateDate()));
                 commentList.add(comment);
             }
             return new CommentRes(0, commentList);
@@ -77,6 +81,7 @@ public class CommentService {
         try {
             List<CommentEntity> commentEntityList = commentDAO.findByPostId(id);
             List commentList = new ArrayList<>();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             int length = commentEntityList.size();
             for (int i = 0; i< length; i++) {
                 Comment comment = new Comment();
@@ -85,7 +90,7 @@ public class CommentService {
                 comment.setCreatorAvatar(userDAO.findById(commentEntityList.get(i).getCreaterId()).getAvatar());
                 comment.setPostId(commentEntityList.get(i).getPostId());
                 comment.setContent(commentEntityList.get(i).getContent());
-                comment.setCreateDate(commentEntityList.get(i).getCreateDate());
+                comment.setCreateDate(df.format(commentEntityList.get(i).getCreateDate()));
                 commentList.add(comment);
             }
             return new CommentRes(0, commentList);
