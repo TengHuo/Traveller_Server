@@ -1,5 +1,7 @@
 package app.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -9,13 +11,16 @@ import java.sql.Date;
 @Entity
 @Table(name = "schedule", schema = "traveller", catalog = "")
 public class ScheduleEntity {
+    @Id
+    @GeneratedValue(generator = "scheduleIdGenerator")
+    @GenericGenerator(name = "scheduleIdGenerator",strategy = "uuid2")
+    @Column(name = "id")
     private String id;
     private String creatorId;
     private String destination;
     private Date scheduleDate;
 
-    @Id
-    @Column(name = "id")
+
     public String getId() {
         return id;
     }

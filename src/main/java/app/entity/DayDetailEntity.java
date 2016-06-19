@@ -1,5 +1,7 @@
 package app.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 /**
@@ -8,6 +10,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "day_detail", schema = "traveller", catalog = "")
 public class DayDetailEntity {
+    @Id
+    @GeneratedValue(generator = "DayDetailIdGenerator")
+    @GenericGenerator(name = "DayDetailIdGenerator",strategy = "uuid2")
+    @Column(name = "id")
     private String id;
     private String planId;
     private String postId;
@@ -18,8 +24,7 @@ public class DayDetailEntity {
     private double longitude;
     private int type;
 
-    @Id
-    @Column(name = "id")
+
     public String getId() {
         return id;
     }
