@@ -33,4 +33,8 @@ public interface PostDAO extends CrudRepository<PostEntity,String> {
 
     @Query("SELECT pe FROM PostEntity  pe ")
     public List<PostEntity> findAll();
+
+    @Query("SELECT pe FROM PostEntity pe WHERE pe.title like :query OR pe.locationDesc LIKE :query OR pe.summary LIKE :query")
+    public List<PostEntity> keyWordQuery(@Param("query")String query);
+
 }
