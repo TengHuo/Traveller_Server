@@ -6,10 +6,14 @@ import app.jsonClass.standardRes;
 import app.jsonClass.tokenRes;
 import app.jsonClass.userInfo;
 import app.jsonClass.userInfoRes;
+import com.fasterxml.jackson.core.sym.NameN;
+import org.omg.PortableInterceptor.HOLDING;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by zhujay on 16/6/15.
@@ -77,5 +81,31 @@ public class UserService {
 
         userInfo ui = new userInfo(null,null,ue.getName(),ue.getAvatar(),ue.getEmail(),ue.getLocation(),ue.getGender(),ue.getSummary(),ue.getHomepage(),ue.getRegisterDate().toString(),ue.getFollowingNum(),ue.getFollowerNum());
         return new userInfoRes(0,null,ui);
+    }
+
+    public standardRes updateUserInfo(String userid, String avatar, String location, int gender, String summary, String homepage) {
+        try {
+            UserEntity ue = userDAO.findById(userid);
+            if (!avatar.equals(null) && !avatar.equals("")) {
+                ue.setAvatar(avatar);
+            }
+            if (!location.equals(null) && !location.equals("")) {
+                ue.setLocation(location);
+            }
+            if (gender == 1 || gender == 2) {
+                ue.setGender(gender);
+            }
+            if (!summary.equals(null) && !summary.equals("")) {
+                ue.setSummary(summary);
+            }
+            if (!homepage.equals(null) && !homepage.equals("")) {
+                ue.setHomepage(homepage);
+            }
+            userDAO.save(ue);
+            return new standardRes(0, "修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new standardRes(107, "修改用户信息失败");
+        }
     }
 }

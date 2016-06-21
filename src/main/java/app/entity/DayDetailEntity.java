@@ -24,7 +24,7 @@ public class DayDetailEntity {
     private double longitude;
     private int type;
 
-    public DayDetailEntity(String planId, String startTime, String postId, String endTime, String destination, double latitude, double longitude, int type) {
+    public DayDetailEntity(String planId, String postId, String startTime, String endTime, String destination, double latitude, double longitude, int type) {
         this.planId = planId;
         this.startTime = startTime;
         this.postId = postId;
