@@ -106,7 +106,7 @@ public class PostService {
                 List<ImageEntity> imageEntityList = imageDAO.findByPostId(postEntity.getId());
                 if (imageEntityList.size() > 1) {
                     Random random = new Random();
-                    int max = imageEntityList.size(), min = 1;
+                    int max = imageEntityList.size() - 1, min = 0;
                     post.setImageURL(imageEntityList.get(random.nextInt(max)%(max-min+1) + min).getImageUrl());
                 } else {
                     post.setImageURL(imageEntityList.get(0).getImageUrl());
@@ -160,7 +160,7 @@ public class PostService {
                     List<ImageEntity> imageEntityList = imageDAO.findByPostId(postEntity.getId());
                     if (imageEntityList.size() > 1) {
                         Random random = new Random();
-                        int max = imageEntityList.size(), min = 1;
+                        int max = imageEntityList.size()-1, min = 0;
                         post.setImageURL(imageEntityList.get(random.nextInt(max)%(max-min+1) + min).getImageUrl());
                     } else {
                         post.setImageURL(imageEntityList.get(0).getImageUrl());
