@@ -24,4 +24,10 @@ public interface PostDAO extends CrudRepository<PostEntity,String> {
      */
     @Query("SELECT pe FROM PostEntity pe WHERE pe.createrId = :id")
     public List<PostEntity> findAllById(@Param("id") String id);
+
+    @Query("SELECT pe.title FROM PostEntity pe WHERE pe.id = :id")
+    public String findTitleById(@Param("id") String id);
+
+    @Query("SELECT pe.locationDesc FROM PostEntity pe WHERE pe.id = :id")
+    public String findLocationById(@Param("id") String id);
 }

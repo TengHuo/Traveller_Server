@@ -67,6 +67,11 @@ public class CommentService {
                 comment.setPostId(commentEntityList.get(i).getPostId());
                 comment.setContent(commentEntityList.get(i).getContent());
                 comment.setCreateDate(df.format(commentEntityList.get(i).getCreateDate()));
+
+                comment.setPost_title(postDAO.findTitleById(commentEntityList.get(i).getPostId()));
+                comment.setPost_location(postDAO.findLocationById(commentEntityList.get(i).getPostId()));
+
+
                 commentList.add(comment);
             }
             return new CommentRes(0, commentList);
