@@ -8,6 +8,15 @@ public class Posts {
     private String title;
     private String location;
     private String imageURL;
+    private String summary;
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 
     public String getId() {
         return id;

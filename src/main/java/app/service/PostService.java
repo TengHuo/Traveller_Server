@@ -155,7 +155,7 @@ public class PostService {
                     post.setId(postEntity.getId());
                     post.setTitle(postEntity.getTitle());
                     post.setLocation(postEntity.getLocationDesc());
-
+                    post.setSummary(postEntity.getSummary());
                     // 随机选一张缩略图
                     List<ImageEntity> imageEntityList = imageDAO.findByPostId(postEntity.getId());
                     if (imageEntityList.size() > 1) {
