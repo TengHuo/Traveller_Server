@@ -219,6 +219,7 @@ public class PostService {
         if(postDAO.findById(post_id) == null) return new standardRes(402, "post id不能存在");
         try {
             ImageEntity ie = new ImageEntity();
+//            ie.setId("id");
             ie.setPostId(post_id);
             ie.setImageUrl(imageUrl);
             imageDAO.save(ie);

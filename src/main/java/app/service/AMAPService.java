@@ -40,7 +40,9 @@ public class AMAPService {
                         (topLatitude + bottomLatitude) / 2,
                         (leftLongitude + rightLongitude) / 2);
                 postEntities.forEach(post -> {
-                    postDAO.save(post);
+                    if (postDAO.findByTitle(post.getTitle()).size() == 0) {
+                        postDAO.save(post);
+                    }
                 });
                 finalResult.addAll(postEntities);
             }
