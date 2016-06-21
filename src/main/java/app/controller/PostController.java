@@ -154,5 +154,17 @@ public class PostController {
         }
     }
 
-//    @RequestMapping(value = "/post/addImage", method = RequestMethod.POST)
+    @RequestMapping(value = "/post/addImage", method = RequestMethod.POST)
+    public standardRes addImage(@RequestParam(value = "token") String token,
+                                @RequestParam(value = "post_id") String post_id,
+                                @RequestParam(value = "imageUrl") String imageUrl) {
+        String _id = tokenService.token2id(token);
+        if(_id == null) return new standardRes(105, "token异常");
+        try {
+            return postService.addImage(post_id, imageUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new standardRes(999, e.toString());
+        }
+    }
 }

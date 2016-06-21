@@ -215,4 +215,18 @@ public class PostService {
         }
      }
 
+    public standardRes addImage(String post_id, String imageUrl) {
+        if(postDAO.findById(post_id) == null) return new standardRes(402, "post id不能存在");
+        try {
+            ImageEntity ie = new ImageEntity();
+            ie.setPostId(post_id);
+            ie.setImageUrl(imageUrl);
+            imageDAO.save(ie);
+            return new standardRes(0, "添加成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new standardRes(405, "获取失败");
+        }
+    }
+
 }

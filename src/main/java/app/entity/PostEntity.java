@@ -38,6 +38,17 @@ public class PostEntity {
         this.createDate = createDate;
     }
 
+    public PostEntity(String id, String title, String createrId, String locationDesc, double latitude, double longitude, String summary, Date createDate) {
+        this.id = id;
+        this.title = title;
+        this.createrId = createrId;
+        this.locationDesc = locationDesc;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.summary = summary;
+        this.createDate = createDate;
+    }
+
     public String getId() {
         return id;
     }
