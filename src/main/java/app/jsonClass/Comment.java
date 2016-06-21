@@ -15,6 +15,7 @@ public class Comment {
     private String postId;
     private String content;
     private String createDate;
+    private String creator_name;
     private String post_title;
     private String post_location;
 
@@ -64,6 +65,14 @@ public class Comment {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public String getCreator_name() {
+        return creator_name;
+    }
+
+    public void setCreator_name(String creator_name) {
+        this.creator_name = creator_name;
     }
 
     public String getPost_title() {
