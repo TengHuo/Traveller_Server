@@ -93,7 +93,7 @@ public class PostController {
         if(_id == null || !_id.equals(creatorId)) return new standardRes(105, "Token异常");
         if (title == "" || title.equals(null)
                 || locationDesc == "" || locationDesc.equals(null)
-                || summary == "" || summary.equals(summary)
+                || summary == "" || summary.equals(null)
                 || createDate == "" || createDate.equals(null)
                 || imageURL == "" || imageURL.equals(null)) {
             return new standardRes(105, "参数不能有空值");
@@ -153,4 +153,6 @@ public class PostController {
             return new PostRes(999, e.toString());
         }
     }
+
+//    @RequestMapping(value = "/post/addImage", method = RequestMethod.POST)
 }

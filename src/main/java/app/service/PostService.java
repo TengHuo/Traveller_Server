@@ -109,7 +109,8 @@ public class PostService {
                     Random random = new Random();
                     int max = imageEntityList.size() - 1, min = 0;
                     post.setImageURL(imageEntityList.get(random.nextInt(max)%(max-min+1) + min).getImageUrl());
-                } else {
+                }
+                if (imageEntityList.size() == 1){
                     post.setImageURL(imageEntityList.get(0).getImageUrl());
                 }
                 postsList.add(post);
@@ -160,11 +161,13 @@ public class PostService {
                     post.setSummary(postEntity.getSummary());
                     // 随机选一张缩略图
                     List<ImageEntity> imageEntityList = imageDAO.findByPostId(postEntity.getId());
+                    System.out.println(imageEntityList.size());
                     if (imageEntityList.size() > 1) {
                         Random random = new Random();
                         int max = imageEntityList.size()-1, min = 0;
                         post.setImageURL(imageEntityList.get(random.nextInt(max)%(max-min+1) + min).getImageUrl());
-                    } else {
+                    }
+                    if (imageEntityList.size() == 1){
                         post.setImageURL(imageEntityList.get(0).getImageUrl());
                     }
                     postsList.add(post);
