@@ -28,7 +28,7 @@ public class PlanController {
         if (_id==null||!_id.equals(userid)) return new standardRes(105, "token出错");
         if (plan.equals("")||scheduleId.equals("")||travelDate.equals("")) return new standardRes(601,"参数不正确");
         try{
-            return planService.addPlan(scheduleId,plan,travelDate);
+            return planService.addPlan(scheduleId,travelDate,plan);
         }catch (Exception e){
             e.printStackTrace();
             return new standardRes(999,e.toString());
