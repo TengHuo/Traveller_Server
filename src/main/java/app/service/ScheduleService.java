@@ -24,7 +24,9 @@ public class ScheduleService {
 
         try{
             scheduleDAO.save(se);
-            return new standardRes();
+            // jixiang: 朱哥，我加了返回id
+            return new standardRes(0, se.getId());
+//            return new standardRes();
         }catch (Exception e){
             e.printStackTrace();
             return new standardRes(999,e.toString());

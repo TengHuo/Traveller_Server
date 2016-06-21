@@ -29,7 +29,9 @@ public class PlanService {
         try{
             planDAO.save(pe);
 //            pe.getPlanId();
-            return new standardRes(0,"操作成功");
+            // jixiang: 我加了返回id
+            return new standardRes(0, pe.getPlanId());
+//            return new standardRes(0,"操作成功");
         }catch (Exception e){
             e.printStackTrace();
             return new standardRes(999,e.toString());
