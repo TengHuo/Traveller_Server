@@ -58,4 +58,21 @@ public class UserController {
         return userService.getUserInfo(userid);
 
     }
+
+    @RequestMapping(value = "/user/info/update", method = RequestMethod.PUT)
+    public standardRes updateUserInfo(@RequestParam("token") String token,
+                                      @RequestParam("userid") String userid,
+                                      @RequestParam("avatar") String avatar,
+                                      @RequestParam("location") String location,
+                                      @RequestParam("gender") int gender,
+                                      @RequestParam("summary") String summary,
+                                      @RequestParam("homepage") String homepage) {
+        if(tokenService.token2id(token) == null ||!tokenService.token2id(token).equals(userid)) return new standardRes(105,"token异常");
+        try {
+            return userService.updateUserInfo(userid, avatar, location, gender, summary, homepage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new standardRes(999, e.toString());
+        }
+    }
 }
