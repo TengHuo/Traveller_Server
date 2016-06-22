@@ -66,7 +66,7 @@ public class PostController {
     public PostRes getPosts(@RequestParam String token,
                             @RequestParam String id) {
         String _id = tokenService.token2id(token);
-        if(_id == null || !_id.equals(id)) return new PostRes(105, "token异常");
+        if(_id == null) return new PostRes(105, "token异常");
         if (id == null) return new PostRes(406, "用户id不能为空");
 
         try {

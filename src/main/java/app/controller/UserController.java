@@ -53,7 +53,7 @@ public class UserController {
     @RequestMapping(value = "/user/{userid}/info",method = RequestMethod.GET)
     public userInfoRes getUserInfo(@PathVariable("userid") String userid,
                                    @RequestParam(value = "token",defaultValue = "")String token){
-        if(tokenService.token2id(token) == null ||!tokenService.token2id(token).equals(userid)) return new userInfoRes(105,"token异常",null);
+        if(tokenService.token2id(token) == null) return new userInfoRes(105,"token异常",null);
 
         return userService.getUserInfo(userid);
 
