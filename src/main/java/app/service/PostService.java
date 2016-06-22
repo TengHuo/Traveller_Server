@@ -110,8 +110,11 @@ public class PostService {
                     int max = imageEntityList.size() - 1, min = 0;
                     post.setImageURL(imageEntityList.get(random.nextInt(max)%(max-min+1) + min).getImageUrl());
                 }
-                if (imageEntityList.size() == 1){
+                else if (imageEntityList.size() == 1){
                     post.setImageURL(imageEntityList.get(0).getImageUrl());
+                }
+                else {
+                    post.setImageURL("");
                 }
                 postsList.add(post);
             });
@@ -167,8 +170,11 @@ public class PostService {
                         int max = imageEntityList.size()-1, min = 0;
                         post.setImageURL(imageEntityList.get(random.nextInt(max)%(max-min+1) + min).getImageUrl());
                     }
-                    if (imageEntityList.size() == 1){
+                    else if (imageEntityList.size() == 1){
                         post.setImageURL(imageEntityList.get(0).getImageUrl());
+                    }
+                    else {
+                        post.setImageURL("");
                     }
                     postsList.add(post);
                 });

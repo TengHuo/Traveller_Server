@@ -34,7 +34,7 @@ public class AMAPService {
                     finalResult.add(postEntityList.get(i));
                 }
             }
-
+            List<PostEntity> finalList = new ArrayList<>();
             if (postInDB < 10) {
                 List<PostEntity> postEntities = getAMAPPosts(
                         (topLatitude + bottomLatitude) / 2,
@@ -42,9 +42,14 @@ public class AMAPService {
                 postEntities.forEach(post -> {
                     if (postDAO.findByTitle(post.getTitle()).size() == 0) {
                         postDAO.save(post);
+                        finalList.add(post);
+                    } else {
+                        if (postDAO.findByTitle(post.getTitle()).size() >= 1) {
+                            finalList.addAll(postDAO.findByTitle(post.getTitle()));
+                        }
                     }
                 });
-                finalResult.addAll(postEntities);
+                finalResult.addAll(finalList);
             }
             return new PostRes(0, finalResult);
         } catch (Exception e) {
@@ -74,7 +79,7 @@ public class AMAPService {
             for (int i = 0; i < node.getLength(); i++) {
                 PostEntity postEntity = new PostEntity();
 
-                postEntity.setId(node.item(i).getChildNodes().item(0).getTextContent());
+//                postEntity.setId(node.item(i).getChildNodes().item(0).getTextContent());
                 postEntity.setTitle(node.item(i).getChildNodes().item(1).getTextContent());
                 postEntity.setCreaterId("e5d0351a-9092-43f1-b187-cfe64cda2ef8");
                 postEntity.setLocationDesc(node.item(i).getChildNodes().item(5).getTextContent());
