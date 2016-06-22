@@ -43,7 +43,7 @@ public class FollowController {
         String _id = tokenService.token2id(token);
         if(_id == null || !_id.equals(following_id)) return new standardRes(105,"token异常");
         try {
-            return followService.cancelFollow(id,following_id);
+            return followService.cancelFollow(following_id,id);
         }catch (Exception e){
             e.printStackTrace();
             return new standardRes(999,e.toString());

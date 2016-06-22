@@ -36,11 +36,15 @@ public class FollowService {
     }
 
     //follow
-    public standardRes follow(String id, String following_id){
-        RelationEntity re=new RelationEntity(id,following_id);
-        if (!checkId(following_id)) return new standardRes(301,"该用户不存在");
+    public standardRes follow(String followerid, String followee_id){
+        RelationEntity re=new RelationEntity(followerid,followee_id);
+        if (!checkId(followee_id)) return new standardRes(301,"该用户不存在");
+        RelationEntity re2 = relationDAO.findByFollowerIdAndFolloweeId(followerid,followee_id);
+        if (re2!=null) return new standardRes(109,"follow关系已存在");
         try{
             relationDAO.save(re);
+            userDAO.updateFolloweeNum(followerid);
+            userDAO.updateFollowerNum(followee_id);
             return new standardRes(0,"操作成功");
         }catch (Exception e){
             e.printStackTrace();
@@ -52,9 +56,11 @@ public class FollowService {
     //取消follow
     public standardRes cancelFollow(String follower_id,String followee_id){
         RelationEntity re = relationDAO.findByFollowerIdAndFolloweeId(follower_id,followee_id);
-        if (re==null) return new standardRes(304,"follow关系不存在");
+        if (re==null) return new standardRes(108,"follow关系不存在");
         try{
             relationDAO.delete(re);
+            userDAO.deleteFolloweeNum(follower_id);
+            userDAO.deleteFollowerNum(followee_id);
             return new standardRes(0,"取消follow成功");
         }catch (Exception e){
             e.printStackTrace();
