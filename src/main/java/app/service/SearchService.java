@@ -28,9 +28,9 @@ public class SearchService {
     public PostRes ketWordQuery(String query){
         try {
             List<Posts> postsList = new ArrayList<>();
-            List<PostEntity> result = postDAO.keyWordQuery(query);
+            List<PostEntity> result = postDAO.keyWordQuery("%"+query+"%");
 
-            result.forEach(R -> {
+            for (PostEntity R : result){
                 Posts post = new Posts();
                 post.setId(R.getId());
                 post.setTitle(R.getTitle());
@@ -43,10 +43,11 @@ public class SearchService {
                     int max = imageEntityList.size()-1, min = 0;
                     post.setImageURL(imageEntityList.get(random.nextInt(max)%(max-min+1) + min).getImageUrl());
                 } else {
-                    post.setImageURL(imageEntityList.get(0).getImageUrl());
+                    if(imageEntityList.size()==0) post.setImageURL("");
+                    else post.setImageURL(imageEntityList.get(0).getImageUrl());
                 }
                 postsList.add(post);
-            });
+            }
             return new PostRes(0, postsList);
         } catch (Exception e) {
             e.printStackTrace();
