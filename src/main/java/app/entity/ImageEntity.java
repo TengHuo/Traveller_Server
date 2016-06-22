@@ -9,7 +9,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "image", schema = "traveller", catalog = "")
-@IdClass(ImageEntityPK.class)
+//@IdClass(ImageEntityPK.class)
 public class ImageEntity {
     @Id
     @GeneratedValue(generator = "imageIdGenerator")

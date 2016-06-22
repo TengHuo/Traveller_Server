@@ -3,11 +3,13 @@ package app.controller;
 import app.jsonClass.Post;
 import app.jsonClass.PostRes;
 import app.jsonClass.standardRes;
+import app.service.AMAPService;
 import app.service.PostService;
 import app.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -22,6 +24,9 @@ public class PostController {
 
     @Autowired
     PostService postService;
+
+    @Autowired
+    AMAPService amapService;
 
     @RequestMapping(value = "/post/detail", method = RequestMethod.GET)
 
@@ -75,20 +80,26 @@ public class PostController {
     @RequestMapping(value = "/post/new", method = RequestMethod.POST)
 
     public standardRes createPost(@RequestParam String token,
-                                  @RequestParam Post post,
-                                  @RequestParam List<String> imageURLs) {
+                                  @RequestParam String title,
+                                  @RequestParam String creatorId,
+                                  @RequestParam String locationDesc,
+                                  @RequestParam double latitude,
+                                  @RequestParam double longitude,
+                                  @RequestParam String summary,
+                                  @RequestParam String createDate,
+                                  @RequestParam String imageURL) {
         String _id = tokenService.token2id(token);
-        if (post.getCreatorId() == null) return new standardRes(406, "用户id不能为空");
-        if(_id == null || !_id.equals(post.getCreatorId())) return new standardRes(105, "Token异常");
-        if (post.getTitle() == null
-                || post.getLocationDesc() == null
-                || post.getSummary() == null
-                || post.getCreateDate() == null
-                || imageURLs.size() < 1) {
+        if (creatorId == "" || creatorId.equals(null)) return new standardRes(406, "用户id不能为空");
+        if(_id == null || !_id.equals(creatorId)) return new standardRes(105, "Token异常");
+        if (title == "" || title.equals(null)
+                || locationDesc == "" || locationDesc.equals(null)
+                || summary == "" || summary.equals(null)
+                || createDate == "" || createDate.equals(null)
+                || imageURL == "" || imageURL.equals(null)) {
             return new standardRes(105, "参数不能有空值");
         }
         try {
-            return postService.savePost(post, imageURLs);
+            return postService.savePost(title, creatorId, locationDesc, latitude, longitude, summary, java.sql.Date.valueOf(createDate), imageURL);
         } catch (Exception e) {
             e.printStackTrace();
             return new standardRes(999, tokenService.id2token(_id));
@@ -124,6 +135,36 @@ public class PostController {
         } catch (Exception e) {
             e.printStackTrace();
             return new PostRes(999, e.toString());
+        }
+    }
+
+    @RequestMapping(value = "/post/nearby", method = RequestMethod.POST)
+    public PostRes getNearByPosts(@RequestParam(value = "token") String token,
+                                  @RequestParam(value = "leftLongitude") double leftLongitude,
+                                  @RequestParam(value = "rightLongitude") double rightLongitude,
+                                  @RequestParam(value = "topLatitude") double topLatitude,
+                                  @RequestParam(value = "bottomLatitude") double bottomLatitude) {
+        String _id = tokenService.token2id(token);
+        if(_id == null) return new PostRes(105, "token异常");
+        try {
+            return amapService.getNearbyPosts(leftLongitude, rightLongitude, topLatitude, bottomLatitude);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new PostRes(999, e.toString());
+        }
+    }
+
+    @RequestMapping(value = "/post/addImage", method = RequestMethod.POST)
+    public standardRes addImage(@RequestParam(value = "token") String token,
+                                @RequestParam(value = "post_id") String post_id,
+                                @RequestParam(value = "imageUrl") String imageUrl) {
+        String _id = tokenService.token2id(token);
+        if(_id == null) return new standardRes(105, "token异常");
+        try {
+            return postService.addImage(post_id, imageUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new standardRes(999, e.toString());
         }
     }
 }

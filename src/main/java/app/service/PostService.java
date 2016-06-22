@@ -6,6 +6,7 @@ import app.jsonClass.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -108,7 +109,8 @@ public class PostService {
                     Random random = new Random();
                     int max = imageEntityList.size() - 1, min = 0;
                     post.setImageURL(imageEntityList.get(random.nextInt(max)%(max-min+1) + min).getImageUrl());
-                } else {
+                }
+                if (imageEntityList.size() == 1){
                     post.setImageURL(imageEntityList.get(0).getImageUrl());
                 }
                 postsList.add(post);
@@ -120,16 +122,17 @@ public class PostService {
         }
     }
 
-    public standardRes savePost(Post post, List<String> imageURLs) {
-        if (userDAO.findById(post.getCreatorId()) == null) return new standardRes(407, "用户id不存在");
+    public standardRes savePost(String title, String creatorId, String locationDesc, double latitude, double longitude,
+                                String  summary, Date createDate, String  imageURL) {
+        if (userDAO.findById(creatorId) == null) return new standardRes(407, "用户id不存在");
         try {
-            PostEntity pe = new PostEntity(post.getTitle(), post.getCreatorId(), post.getLocationDesc(),
-                    post.getLatitude(), post.getLongitude(), post.getSummary(), post.getCreateDate());
+            PostEntity pe = new PostEntity(title, creatorId, locationDesc,
+                    latitude, longitude, summary, createDate);
             postDAO.save(pe);
-            imageURLs.forEach(url -> {
-                ImageEntity image = new ImageEntity(pe.getId(), url);
-                imageDAO.save(image);
-            });
+
+            ImageEntity image = new ImageEntity(pe.getId(), imageURL);
+            imageDAO.save(image);
+
             return new standardRes(0, "post发布成功");
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,6 +161,7 @@ public class PostService {
                     post.setSummary(postEntity.getSummary());
                     // 随机选一张缩略图
                     List<ImageEntity> imageEntityList = imageDAO.findByPostId(postEntity.getId());
+                    System.out.println(imageEntityList.size());
                     if (imageEntityList.size() > 1) {
                         Random random = new Random();
                         int max = imageEntityList.size()-1, min = 0;
@@ -210,5 +214,20 @@ public class PostService {
             return new PostRes(405, "获取失败");
         }
      }
+
+    public standardRes addImage(String post_id, String imageUrl) {
+        if(postDAO.findById(post_id) == null) return new standardRes(402, "post id不能存在");
+        try {
+            ImageEntity ie = new ImageEntity();
+//            ie.setId("id");
+            ie.setPostId(post_id);
+            ie.setImageUrl(imageUrl);
+            imageDAO.save(ie);
+            return new standardRes(0, "添加成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new standardRes(405, "获取失败");
+        }
+    }
 
 }
