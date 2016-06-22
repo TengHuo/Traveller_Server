@@ -55,7 +55,7 @@ public class UserController {
                                    @RequestParam(value = "token",defaultValue = "")String token){
         if(tokenService.token2id(token) == null) return new userInfoRes(105,"token异常",null);
 
-        return userService.getUserInfo(userid);
+        return userService.getUserInfo(userid, tokenService.token2id(token));
 
     }
 

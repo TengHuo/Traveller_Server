@@ -1,19 +1,21 @@
 package app.service;
 
+import app.dao.RelationDAO;
 import app.dao.UserDAO;
+import app.entity.RelationEntity;
 import app.entity.UserEntity;
-import app.jsonClass.standardRes;
-import app.jsonClass.tokenRes;
-import app.jsonClass.userInfo;
-import app.jsonClass.userInfoRes;
+import app.jsonClass.*;
 import com.fasterxml.jackson.core.sym.NameN;
 import org.omg.PortableInterceptor.HOLDING;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Relation;
+import javax.management.relation.RelationException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  * Created by zhujay on 16/6/15.
@@ -25,6 +27,12 @@ public class UserService {
 
     @Autowired
     TokenService tokenService;
+
+    @Autowired
+    FollowService followService;
+
+    @Autowired
+    RelationDAO relationDAO;
 
     public boolean checkUserByEmail(String email){
         UserEntity ue = userDAO.findByEmail(email);
@@ -75,12 +83,40 @@ public class UserService {
         }
     }
 
-    public userInfoRes getUserInfo(String userid){
+    public userInfoRes getUserInfo(String userid, String _id){
         UserEntity ue = userDAO.findById(userid);
-        if(ue == null) return new userInfoRes(106,"获取用户信息失败",null);
+        if (ue == null) return new userInfoRes(106, "获取用户信息失败", null);
+        userInfo ui = new userInfo(null, null, ue.getName(), ue.getAvatar(), ue.getEmail(), ue.getLocation(), ue.getGender(), ue.getSummary(), ue.getHomepage(), ue.getRegisterDate().toString(), ue.getFollowingNum(), ue.getFollowerNum());
 
-        userInfo ui = new userInfo(null,null,ue.getName(),ue.getAvatar(),ue.getEmail(),ue.getLocation(),ue.getGender(),ue.getSummary(),ue.getHomepage(),ue.getRegisterDate().toString(),ue.getFollowingNum(),ue.getFollowerNum());
-        return new userInfoRes(0,null,ui);
+        if (userid.equals(_id)) {
+            return new userInfoRes(0, null, ui);
+        }
+        if (!userid.equals(_id)) {
+//            UserEntity ue = userDAO.findById(userid);
+//            if (ue == null) return new userInfoRes(106, "获取用户信息失败", null);
+//            userInfo ui = new userInfo(null, null, ue.getName(), ue.getAvatar(), ue.getEmail(), ue.getLocation(), ue.getGender(), ue.getSummary(), ue.getHomepage(), ue.getRegisterDate().toString(), ue.getFollowingNum(), ue.getFollowerNum());
+
+            // 自己的信息
+            UserEntity me = userDAO.findById(_id);
+
+            // 别人的信息
+            UserEntity other = userDAO.findById(userid);
+            if (!me.equals(null) && !other.equals(null)) {
+                // 当前用户有没有关注post用户
+                //
+                if(relationDAO.findByFollowerIdAndFolloweeId(_id, userid) == null) {
+                    return new userInfoRes(0, "no relation", ui);
+                } else {
+                    return new userInfoRes(0, "following", ui);
+                }
+//                List<userInfo> userInfoList = followService.getFollowing(_id).getFollowing_List();
+//                for(userInfo user : userInfoList) {
+//                    if (!user.getFollowee_id().equals(userid)) return new userInfoRes(0, "following", ui);
+//                }
+//                return new userInfoRes(0, "no relation", ui);
+            }
+        }
+        return new userInfoRes(405, "获取失败", null);
     }
 
     public standardRes updateUserInfo(String userid, String avatar, String location, int gender, String summary, String homepage) {
