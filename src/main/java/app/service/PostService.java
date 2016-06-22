@@ -172,9 +172,10 @@ public class PostService {
                     }
                     else if (imageEntityList.size() == 1){
                         post.setImageURL(imageEntityList.get(0).getImageUrl());
-                    }
-                    else {
-                        post.setImageURL("");
+                    } else {
+//                        if(imageEntityList.size()==0)
+                            post.setImageURL("");
+//                        else post.setImageURL(imageEntityList.get(0).getImageUrl());
                     }
                     postsList.add(post);
                 });
